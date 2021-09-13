@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import { Input, Header, Messages } from "./index";
 import { connect } from "react-redux";
+import { isEqual } from "lodash";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -23,7 +24,17 @@ const useStyles = makeStyles(() => ({
 const ActiveChat = (props) => {
   const classes = useStyles();
   const { user } = props;
-  const conversation = props.conversation || {};
+  const [conversation, setConversation] = useState({})
+  
+  useEffect(() => {
+    const data = props.conversations &&
+      props.conversations.find(
+        (conversation) => conversation.otherUser.username === props.activeConversation
+      );
+    if (!isEqual(conversation, data)) {
+      setConversation(data || {});
+    }
+  }, [props.conversations, props.activeConversation]);
 
   return (
     <Box className={classes.root}>
@@ -54,11 +65,8 @@ const ActiveChat = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    conversation:
-      state.conversations &&
-      state.conversations.find(
-        (conversation) => conversation.otherUser.username === state.activeConversation
-      )
+    conversations: state.conversations,
+    activeConversation: state.activeConversation,
   };
 };
 
