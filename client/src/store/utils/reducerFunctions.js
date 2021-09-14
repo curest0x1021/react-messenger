@@ -10,15 +10,15 @@ export const addMessageToStore = (state, payload) => {
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
   }
-
+  
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
-      convo.messages.push(message);
-      convo.messages.sort((a, b) => {
-        return new Date(a.updatedAt) - new Date(b.updatedAt);
-      });
-      convo.latestMessageText = message.text;
-      return convo;
+      var newConvo = Object.assign([], convo);
+      if (message.id > convo.messages.at(-1).id) {
+        newConvo.messages.push(message);
+        newConvo.latestMessageText = message.text;
+      }
+      return newConvo;
     } else {
       return convo;
     }
