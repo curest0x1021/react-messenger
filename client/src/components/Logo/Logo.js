@@ -8,11 +8,11 @@ import {
 import { useStyles } from "../../themes/styles/logo";
 import bubble from "../../assets/bubble.svg";
 
-const Logo = () => {
+const Logo = ({sm = 5}) => {
   const classes = useStyles();
 
   return (
-    <Grid item sm={5} className={classes.logoContainer}>
+    <Grid item sm={sm} className={classes.logoContainer}>
       <Hidden xsDown>
         <Box className={classes.logoOverlay}>
           <img src={bubble} alt="bubble" className={classes.logoBubble}/>

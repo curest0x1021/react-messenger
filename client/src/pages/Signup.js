@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
+  Box,
   Grid,
   Container,
   CssBaseline,
@@ -12,11 +13,13 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { Logo } from "../components";
-import { useStyles } from "../themes/styles/signup";
 import { register } from "../store/utils/thunkCreators";
+import { useStyles } from "../themes/styles/signup";
+import { useButtonStyles } from "../themes/styles/button";
 
-const Login = (props) => {
+const Signup = (props) => {
   const classes = useStyles();
+  const buttonClasses = useButtonStyles();
   const history = useHistory();
   const { user, register } = props;
   const [formErrorMessage, setFormErrorMessage] = useState({});
@@ -44,16 +47,23 @@ const Login = (props) => {
     <Container maxWidth="lg" className={classes.container}>
       <CssBaseline />
       <Grid container className={classes.mainContainer}>
-        <Logo />
-        <Grid container item xs={12} sm={7} justifyContent="center">
-          <Grid container item>
-            <Typography>Need to log in?</Typography>
-            <Button onClick={() => history.push("/login")}>Login</Button>
-          </Grid>
+        <Logo sm={5}/>
+        <Grid xs={12} sm={7}>
+          <Box className={classes.topContainer}>
+            <Typography variant="body1" className={classes.loginLabel}>
+              Already have an account?
+            </Typography>
+            <Button
+              variant="contained"
+              className={buttonClasses.button}
+              onClick={() => history.push("/login")}>
+              Login
+            </Button>
+          </Box>
           <form onSubmit={handleRegister}>
-          <Grid>
-            <Grid>
-              <FormControl>
+            <Box className={classes.formContainer}>
+              <Typography variant="h4">Create an account.</Typography>
+              <FormControl margin="normal" required fullWidth>
                 <TextField
                   aria-label="username"
                   label="Username"
@@ -62,9 +72,7 @@ const Login = (props) => {
                   required
                 />
               </FormControl>
-            </Grid>
-            <Grid>
-              <FormControl>
+              <FormControl margin="normal" required fullWidth>
                 <TextField
                   label="E-mail address"
                   aria-label="e-mail address"
@@ -73,9 +81,7 @@ const Login = (props) => {
                   required
                 />
               </FormControl>
-            </Grid>
-            <Grid>
-              <FormControl error={!!formErrorMessage.confirmPassword}>
+              <FormControl margin="normal" required fullWidth error={!!formErrorMessage.confirmPassword}>
                 <TextField
                   aria-label="password"
                   label="Password"
@@ -88,9 +94,7 @@ const Login = (props) => {
                   {formErrorMessage.confirmPassword}
                 </FormHelperText>
               </FormControl>
-            </Grid>
-            <Grid>
-              <FormControl error={!!formErrorMessage.confirmPassword}>
+              <FormControl margin="normal" required fullWidth error={!!formErrorMessage.confirmPassword}>
                 <TextField
                   label="Confirm Password"
                   aria-label="confirm password"
@@ -103,12 +107,13 @@ const Login = (props) => {
                   {formErrorMessage.confirmPassword}
                 </FormHelperText>
               </FormControl>
-            </Grid>
-            <Button type="submit" variant="contained" size="large">
-              Create
-            </Button>
-          </Grid>
-        </form>
+              <Box className={classes.buttonContainer}>
+                <Button type="submit" variant="contained" className={buttonClasses.buttonBlue}>
+                  Create
+                </Button>
+              </Box>
+            </Box>
+          </form>
         </Grid>
       </Grid>
     </Container>
@@ -129,4 +134,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

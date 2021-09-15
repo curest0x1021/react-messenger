@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
+  Box,
   Grid,
   Typography,
   Button,
@@ -9,13 +10,16 @@ import {
   TextField,
   Container,
   CssBaseline,
+  InputAdornment,
 } from "@material-ui/core";
 import { Logo } from "../components";
 import { login } from "../store/utils/thunkCreators";
 import { useStyles } from "../themes/styles/login";
+import { useButtonStyles } from "../themes/styles/button";
 
 const Login = (props) => {
   const classes = useStyles();
+  const buttonClasses = useButtonStyles();
   const history = useHistory();
   const { user, login } = props;
 
@@ -35,38 +39,53 @@ const Login = (props) => {
     <Container maxWidth="lg" className={classes.container}>
       <CssBaseline />
       <Grid container className={classes.mainContainer}>
-        <Logo />
-        <Grid container item xs={12} sm={7} justifyContent="center">
-          <Grid container item>
-            <Typography>Need to register?</Typography>
-            <Button onClick={() => history.push("/register")}>Register</Button>
-          </Grid>
+        <Logo sm={5}/>
+        <Grid xs={12} sm={7} >
+          <Box className={classes.topContainer}>
+            <Typography variant="body1" className={classes.registerLabel}>
+              Do you have an account?
+            </Typography>
+            <Button
+              variant="contained"
+              className={buttonClasses.button}
+              onClick={() => history.push("/register")}>
+              Create account
+            </Button>
+          </Box>
           <form onSubmit={handleLogin}>
-            <Grid>
-              <Grid>
-                <FormControl margin="normal" required>
-                  <TextField
-                    aria-label="username"
-                    label="Username"
-                    name="username"
-                    type="text"
-                  />
-                </FormControl>
-              </Grid>
-              <FormControl margin="normal" required>
+            <Box className={classes.formContainer}>
+              <Typography variant="h4">Welcome back!</Typography>
+              <FormControl margin="normal" required fullWidth>
+                <TextField
+                  aria-label="username"
+                  label="Username"
+                  name="username"
+                  type="text"
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
                 <TextField
                   label="password"
                   aria-label="password"
                   type="password"
                   name="password"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Button className={classes.forgotButton}>
+                          Forgot?
+                        </Button>
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </FormControl>
-              <Grid>
-                <Button type="submit" variant="contained" size="large">
+              <Box className={classes.buttonContainer}>
+                <Button type="submit" variant="contained" className={buttonClasses.buttonBlue}>
                   Login
                 </Button>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </form>
         </Grid>
       </Grid>
