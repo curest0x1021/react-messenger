@@ -3,16 +3,20 @@ import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   Grid,
-  Box,
+  Container,
+  CssBaseline,
   Typography,
   Button,
   FormControl,
   TextField,
   FormHelperText,
 } from "@material-ui/core";
+import { Logo } from "../components";
+import { useStyles } from "../themes/styles/signup";
 import { register } from "../store/utils/thunkCreators";
 
 const Login = (props) => {
+  const classes = useStyles();
   const history = useHistory();
   const { user, register } = props;
   const [formErrorMessage, setFormErrorMessage] = useState({});
@@ -37,13 +41,16 @@ const Login = (props) => {
   }
 
   return (
-    <Grid container justifyContent="center">
-      <Box>
-        <Grid container item>
-          <Typography>Need to log in?</Typography>
-          <Button onClick={() => history.push("/login")}>Login</Button>
-        </Grid>
-        <form onSubmit={handleRegister}>
+    <Container maxWidth="lg" className={classes.container}>
+      <CssBaseline />
+      <Grid container className={classes.mainContainer}>
+        <Logo />
+        <Grid container item xs={12} sm={7} justifyContent="center">
+          <Grid container item>
+            <Typography>Need to log in?</Typography>
+            <Button onClick={() => history.push("/login")}>Login</Button>
+          </Grid>
+          <form onSubmit={handleRegister}>
           <Grid>
             <Grid>
               <FormControl>
@@ -102,8 +109,9 @@ const Login = (props) => {
             </Button>
           </Grid>
         </form>
-      </Box>
-    </Grid>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
