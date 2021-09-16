@@ -23,7 +23,7 @@ export const useStyles = makeStyles(theme => ({
     height: "80px",
   },
   logoText: {
-    margin: "50px 50px 150px 50px",
+    margin: theme.spacing(12, 12, 36, 12),
     color: theme.palette.text.logo,
     lineHeight: "50px",
   },

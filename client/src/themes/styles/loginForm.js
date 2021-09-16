@@ -7,13 +7,13 @@ export const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "flex-end",
     height: "80px",
-    margin: "10px 30px"
+    margin: theme.spacing(3, 8),
   },
   label: {
     color: theme.palette.text.placeholder,
-    marginRight: "32px",
+    marginRight: theme.spacing(8),
     "@media (max-width: 420px)": {
-      marginRight: "8px"
+      marginRight: theme.spacing(2),
     },
   },
   formContainer: {
@@ -21,9 +21,9 @@ export const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    margin: "80px 100px 0 100px",
+    margin: theme.spacing(20, 25, 0, 25),
     "@media (max-width: 800px)": {
-      margin: "80px 50px 0 50px"
+      margin: theme.spacing(20, 12, 0, 12),
     },
   },
   buttonContainer: {
@@ -31,7 +31,7 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "50px",
+    marginTop: theme.spacing(12),
   },
   forgotButton: {
     color: theme.palette.primary.main,
@@ -43,17 +43,17 @@ export const useStyles = makeStyles(theme => ({
     border: 0,
     color: theme.palette.primary.main,
     height: 60,
-    padding: "0 30px",
+    padding: theme.spacing(0, 8),
     "@media (max-width: 800px)": {
-      padding: "0 10px",
+      padding: theme.spacing(0, 2),
     },
-    boxShadow: `1px 1px 2px 2px ${theme.palette.shadow.primary}`,
+    boxShadow: `${theme.spacing(0.25, 0.25, 0.5, 0.5)} ${theme.palette.shadow.primary}`,
   },
   buttonBlue: {
     background: theme.palette.primary.main,
     color: theme.palette.background.primary,
     height: 60,
-    padding: "0px 50px",
-    boxShadow: `1px 1px 2px 2px ${theme.palette.shadow.secondary}`,
+    padding: theme.spacing(0, 8),
+    boxShadow: `${theme.spacing(0.25, 0.25, 0.5, 0.5)} ${theme.palette.shadow.secondary}`,
   },
 }));
