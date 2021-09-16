@@ -53,7 +53,7 @@ export const useStyles = makeStyles(theme => ({
     background: theme.palette.primary.main,
     color: theme.palette.background.primary,
     height: 60,
-    padding: theme.spacing(0, 8),
+    padding: theme.spacing(0, 16),
     boxShadow: `${theme.spacing(0.25, 0.25, 0.5, 0.5)} ${theme.palette.shadow.secondary}`,
   },
 }));
