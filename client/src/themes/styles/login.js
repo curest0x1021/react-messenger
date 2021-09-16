@@ -13,40 +13,4 @@ export const useStyles = makeStyles(theme => ({
     overflow: "hidden",
     backgroundColor: theme.palette.background.primary
   },
-  topContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    height: "80px",
-    margin: "10px 30px"
-  },
-  registerLabel: {
-    color: theme.palette.text.placeholder,
-    marginRight: "32px",
-    "@media (max-width: 420px)": {
-      marginRight: "8px"
-    },
-  },
-  formContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    margin: "80px 100px 0 100px",
-    "@media (max-width: 800px)": {
-      margin: "80px 50px 0 50px"
-    },
-  },
-  buttonContainer: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: "50px",
-  },
-  forgotButton: {
-    color: theme.palette.primary.main,
-    fontSize: "12px"
-  }
 }));

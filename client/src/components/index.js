@@ -1,3 +1,4 @@
 export { default as Home } from "./Home";
-export { default as Logo } from "./Logo/Logo";
+export { default as LoginForm } from "./Login/LoginForm";
+export { default as Logo } from "./Login/Logo";
 export { default as SnackbarError } from "./SnackbarError";

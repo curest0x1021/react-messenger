@@ -1,18 +1,6 @@
 import { makeStyles } from "@material-ui/styles";
 
 export const useStyles = makeStyles(theme => ({
-  container: {
-    display: "flex",
-    padding: "8px 8px 16px 8px",
-    height: "100vh",
-  },
-  mainContainer: {
-    height: "100%",
-    boxShadow: "0px 0px 2px 2px #ddd",
-    borderRadius: "2px",
-    overflow: "hidden",
-    backgroundColor: theme.palette.background.primary
-  },
   topContainer: {
     display: "flex",
     flexDirection: "row",
@@ -21,7 +9,7 @@ export const useStyles = makeStyles(theme => ({
     height: "80px",
     margin: "10px 30px"
   },
-  loginLabel: {
+  label: {
     color: theme.palette.text.placeholder,
     marginRight: "32px",
     "@media (max-width: 420px)": {
@@ -44,5 +32,28 @@ export const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "center",
     marginTop: "50px",
+  },
+  forgotButton: {
+    color: theme.palette.primary.main,
+    fontSize: "12px"
+  },
+  button: {
+    background: theme.palette.background.primary,
+    borderRadius: 3,
+    border: 0,
+    color: theme.palette.primary.main,
+    height: 60,
+    padding: "0 30px",
+    "@media (max-width: 800px)": {
+      padding: "0 10px",
+    },
+    boxShadow: `1px 1px 2px 2px ${theme.palette.shadow.primary}`,
+  },
+  buttonBlue: {
+    background: theme.palette.primary.main,
+    color: theme.palette.background.primary,
+    height: 60,
+    padding: "0px 50px",
+    boxShadow: `1px 1px 2px 2px ${theme.palette.shadow.secondary}`,
   },
 }));
