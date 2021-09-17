@@ -1,77 +1,12 @@
 import React from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, LinearProgress, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Close, CheckCircleOutline } from "@material-ui/icons";
+import { Close, CheckCircleOutline, ErrorOutline } from "@material-ui/icons";
 import { styled } from "@material-ui/styles";
 import PropTypes from "prop-types";
 import Dropzone from "./Dropzone";
 import { connect } from "react-redux";
 import { addNewFiles, uploadFiles, reset } from "../../store/utils/thunkFiles";
-
-
-const useStyles = makeStyles((theme) => ({
-  content: {
-    display: "flex",
-    flexDirection: "row",
-    paddingTop: theme.spacing(4),
-    boxSizing: "border-box",
-    width: "600px",
-  },
-  files: {
-    marginLeft: theme.spacing(8),
-    alignItems: "flex-start",
-    justifyItems: "flex-start",
-    flex: 1,
-    overflowY: "auto",
-  },
-  title: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: theme.spacing(4),
-    width: "100%",
-  },
-  iconClose: {
-    marginLeft: "auto",
-    marginRight: theme.spacing(2),
-  },
-  itemContainer: {
-    display: "flex",
-    width: "100%",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    height: "50px",
-    padding: theme.spacing(2),
-    overflow: "hidden",
-    boxSizing: "border-box",
-  },
-  nameContainer: {
-    display: "flex",
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  fileName: {
-    marginBottom: theme.spacing(2),
-    color: theme.palette.text.file,
-  },
-  checkIcon: {
-    opacity: 0.5,
-    marginLeft: "auto",
-  },
-  progressbar: {
-    width: "100%",
-  },
-  actions: {
-    display: "flex",
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "flex-end",
-    marginTop: theme.spacing(4),
-  },
-}));
+import { useStyles } from "../../themes/styles/uploadDialog";
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuDialogContent-root': {
@@ -128,6 +63,16 @@ const UploadDialog = (props) => {
     props.onClose();
   }
 
+  const isUploadButtonDisabled = () => {
+    const filterData = data.filter(item => item.url === "");
+    return filterData.length === 0
+  }
+
+  const isSendButtonDisabled = () => {
+    const filterData = data.filter(item => item.url !== "");
+    return filterData.length === 0;
+  }
+
   const renderItem = (item) => {
     return (
       <div key={item.id} className={classes.itemContainer}>
@@ -136,6 +81,12 @@ const UploadDialog = (props) => {
           {item.url &&
             <CheckCircleOutline
               className={classes.checkIcon}
+              fontSize="small"
+            />
+          }
+          {item.failed && 
+            <ErrorOutline
+              className={classes.errorIcon}
               fontSize="small"
             />
           }
@@ -167,7 +118,17 @@ const UploadDialog = (props) => {
         </div>
       </DialogContent>
       <DialogActions className={classes.actions}>
-        <Button onClick={uploadFiles}>
+        <Button
+          variant="outlined"
+          className={classes.uploadButton}
+          onClick={uploadFiles}
+          disabled={isUploadButtonDisabled()}>
+          Upload
+        </Button>
+        <Button
+          variant="outlined"
+          className={classes.sendButton}
+          disabled={isSendButtonDisabled()}>
           Send
         </Button>
       </DialogActions>

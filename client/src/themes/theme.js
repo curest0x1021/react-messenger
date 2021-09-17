@@ -56,5 +56,9 @@ export const theme = createTheme({
       logo: "#fff",
       file: "#555",
     },
+    icon: {
+      success: "#68A320",
+      error: "#EF5350",
+    }
   },
 });
