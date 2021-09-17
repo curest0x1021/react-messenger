@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -17,17 +17,9 @@ import { useStyles } from "../../themes/styles/loginForm";
 const LoginForm = (props) => {
   const classes = useStyles();
   const history = useHistory();
-  const { user, login, register, sm = 7 } = props;
+  const { user, login, register, sm = 7, isSignUp } = props;
   
   const [formErrorMessage, setFormErrorMessage] = useState({});
-  const [isSignUp, setSignUp] = useState(props.isSignUp);
-
-  useEffect(() => {
-    if (isSignUp !== props.isSignUp) {
-      setSignUp(props.isSignUp);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.isSignUp]);
 
   const handleSubmit = async (event) => {
     if (isSignUp) {
