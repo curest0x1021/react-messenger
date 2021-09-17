@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { FormControl, FilledInput } from "@material-ui/core";
+import { FormControl, FilledInput, InputAdornment, IconButton } from "@material-ui/core";
+import { FileCopyOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
+import UploadDialog from "./UploadDialog";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -20,6 +22,7 @@ const useStyles = makeStyles(() => ({
 const Input = (props) => {
   const classes = useStyles();
   const [text, setText] = useState("");
+  const [open, setOpen] = useState(false);
   const { postMessage, otherUser, conversationId, user } = props;
 
   const handleChange = (event) => {
@@ -39,19 +42,42 @@ const Input = (props) => {
     setText("");
   };
 
+  const handleAttachClick = () => {
+    setOpen(true);
+  }
+
+  const handleOnClose = () => {
+    setOpen(false);
+  }
+
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
-      <FormControl fullWidth hiddenLabel>
-        <FilledInput
-          classes={{ root: classes.input }}
-          disableUnderline
-          placeholder="Type something..."
-          value={text}
-          name="text"
-          onChange={handleChange}
-        />
-      </FormControl>
-    </form>
+    <>
+      <form className={classes.root} onSubmit={handleSubmit}>
+        <FormControl fullWidth hiddenLabel>
+          <FilledInput
+            classes={{ root: classes.input }}
+            disableUnderline
+            placeholder="Type something..."
+            value={text}
+            name="text"
+            onChange={handleChange}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  size="small"
+                  onClick={handleAttachClick}>
+                  <FileCopyOutlined />
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+      </form>
+      <UploadDialog
+        open={open}
+        onClose={handleOnClose}
+      />
+    </>
   );
 };
 
