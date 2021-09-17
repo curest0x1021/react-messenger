@@ -9,7 +9,11 @@ export const addMessageToStore = (state, payload) => {
       otherUser: sender,
       messages: [message],
     };
-    newConvo.latestMessageText = message.text;
+    if (message.text) {
+      newConvo.latestMessageText = message.text;
+    } else if (message.attachments && message.attachments.length > 0) {
+      newConvo.latestMessageText = "Image attached";
+    }
     return [newConvo, ...state];
   }
   
@@ -17,7 +21,11 @@ export const addMessageToStore = (state, payload) => {
     if (convo.id === message.conversationId) {
       const newConvo = { ...convo };
       newConvo.messages.push(message);
-      newConvo.latestMessageText = message.text;
+      if (message.text) {
+        newConvo.latestMessageText = message.text;
+      } else if (message.attachments && message.attachments.length > 0) {
+        newConvo.latestMessageText = "Image attached";
+      }
       return newConvo;
     } else {
       return convo;
@@ -75,7 +83,11 @@ export const addNewConvoToStore = (state, recipientId, message) => {
       const newConvo = { ...convo };
       newConvo.id = message.conversationId;
       newConvo.messages.push(message);
-      newConvo.latestMessageText = message.text;
+      if (message.text) {
+        newConvo.latestMessageText = message.text;
+      } else if (message.attachments && message.attachments.length > 0) {
+        newConvo.latestMessageText = "Image attached";
+      }
       return newConvo;
     } else {
       return convo;

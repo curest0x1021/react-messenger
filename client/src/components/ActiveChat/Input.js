@@ -50,6 +50,18 @@ const Input = (props) => {
     setOpen(false);
   }
 
+  const handleImageSubmit = async (urls) => {
+    const reqBody = {
+      text: text,
+      recipientId: otherUser.id,
+      conversationId,
+      sender: conversationId ? null : user,
+      attachments: urls,
+    };
+    await postMessage(reqBody);
+    setText("");
+  }
+
   return (
     <>
       <form className={classes.root} onSubmit={handleSubmit}>
@@ -76,6 +88,7 @@ const Input = (props) => {
       <UploadDialog
         open={open}
         onClose={handleOnClose}
+        onSubmit={handleImageSubmit}
       />
     </>
   );

@@ -73,6 +73,15 @@ const UploadDialog = (props) => {
     return filterData.length === 0;
   }
 
+  const handleOnSubmit = () => {
+    const urls = data.filter(item => item.url !== "").map(item => item.url);
+    if (urls.length > 0) {
+      props.onSubmit(urls);
+    }
+    props.reset();
+    props.onClose();
+  }
+
   const renderItem = (item) => {
     return (
       <div key={item.id} className={classes.itemContainer}>
@@ -128,7 +137,8 @@ const UploadDialog = (props) => {
         <Button
           variant="outlined"
           className={classes.sendButton}
-          disabled={isSendButtonDisabled()}>
+          disabled={isSendButtonDisabled()}
+          onClick={handleOnSubmit}>
           Send
         </Button>
       </DialogActions>
