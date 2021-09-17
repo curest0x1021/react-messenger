@@ -4,7 +4,7 @@ import { FileCopyOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
-import UploadDialog from "./UploadDialog";
+import UploadDialog from "../UploadDialog/UploadDialog";
 
 const useStyles = makeStyles(() => ({
   root: {

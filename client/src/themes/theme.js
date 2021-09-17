@@ -54,6 +54,7 @@ export const theme = createTheme({
       placeholder: "#B8B8B8",
       title: "#787A97",
       logo: "#fff",
-    }
-  }
+      file: "#555",
+    },
+  },
 });

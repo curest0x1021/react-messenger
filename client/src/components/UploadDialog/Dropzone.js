@@ -51,7 +51,7 @@ const Dropzone = (props) => {
     if (props.disabled) return;
     const files = event.dataTransfer.files;
     if (props.onFilesAdded) {
-      props.onFilesAdded(files);
+      props.onFilesAdded(fileListToArray(files));
     }
     setHighlight(false);
   }
@@ -65,8 +65,16 @@ const Dropzone = (props) => {
     if (props.disabled) return;
     const files = event.target.files;
     if (props.onFilesAdded) {
-      props.onFilesAdded(files);
+      props.onFilesAdded(fileListToArray(files));
     }
+  }
+
+  function fileListToArray(list) {
+    const array = [];
+    for (var i = 0; i < list.length; i++) {
+      array.push(list.item(i));
+    }
+    return array;
   }
 
   return (
@@ -82,10 +90,11 @@ const Dropzone = (props) => {
         ref={fileInputRef}
         className={classes.fileInput}
         type="file"
+        accept=".jpg, .jpeg, .png, .svg, .tiff"
         multiple
         onChange={handleOnFilesAdded}
       />
-      <CloudUpload fontSize="inherit" color="#a8a8a8" className={classes.icon}/>
+      <CloudUpload fontSize="inherit" className={classes.icon}/>
       <Typography>Upload Files</Typography>
     </div>
   );
