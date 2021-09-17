@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, LinearProgress, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Close, CheckCircleOutline } from "@material-ui/icons";
 import { styled } from "@material-ui/styles";
 import PropTypes from "prop-types";
 import Dropzone from "./Dropzone";
-import axios from "axios";
+import { connect } from "react-redux";
+import { addNewFiles, uploadFiles, reset } from "../../store/utils/thunkFiles";
+
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -34,29 +36,33 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: theme.spacing(2),
   },
-  fileName: {
-    marginBottom: theme.spacing(2),
-    color: theme.palette.text.file,
-  },
-  row: {
+  itemContainer: {
     display: "flex",
-    flex: 1,
+    width: "100%",
     flexDirection: "column",
-    justifyContent: "space-between",
+    alignItems: "flex-start",
     height: "50px",
     padding: theme.spacing(2),
     overflow: "hidden",
     boxSizing: "border-box",
   },
-  checkIcon: {
-    opacity: 0.5,
-    marginLeft: theme.spacing(8),
-  },
-  progressWrapper: {
+  nameContainer: {
     display: "flex",
-    flex: 1,
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+  },
+  fileName: {
+    marginBottom: theme.spacing(2),
+    color: theme.palette.text.file,
+  },
+  checkIcon: {
+    opacity: 0.5,
+    marginLeft: "auto",
+  },
+  progressbar: {
+    width: "100%",
   },
   actions: {
     display: "flex",
@@ -104,116 +110,60 @@ CustomDialogTitle.propTypes = {
 
 const UploadDialog = (props) => {
   const classes = useStyles();
-  const [state, setState] = useState({
-    uploading: false,
-    successUploaded: false,
-    files: [],
-    uploadProgress: {}
-  });
-  // const [uploading, setUploading] = useState(false);
-  // const [successUploaded, setSuccessUploaded] = useState(false);
-  // const [files, setFiles] = useState([]);
-  // const [uploadProgress, setUploadProgress] = useState({});
+  const { data } = props;
 
   const onFilesAdded = (addFiles) => {
-    const files = [...state.files];
-    const newFiles = files.concat(addFiles);
-    console.log(newFiles);
-    setState({ ...state, files: newFiles });
+    props.addNewFiles(addFiles);
   }
 
-  const uploadFiles = async () => {
-    state.uploadProgress = {};
-    state.uploading = true;
-    setState({ ...state, uploading: true, uploadProgress: {} });
-    const promises = [];
-    state.files.forEach(file => {
-      promises.push(sendRequest(file));
-    });
-    try {
-      await Promise.all(promises);
-      setState({ ...state, successUploaded: true, uploading: false });
-    } catch (e) {
-      setState({ ...state, successUploaded: true, uploading: false });
+  const uploadFiles = () => {
+    const filterData = data.filter(item => item.url === "");
+    if (filterData.length > 0) {
+      props.uploadFiles(filterData);
     }
   }
 
-  function sendRequest(file) {
-    return new Promise((resolve, reject) => {
-      const config = {
-        onUploadProgress: function(event) {
-          if (event.lengthComputable) {
-            const copy = { ...state.uploadProgress };
-            copy[file.name] = {
-              state: "pending",
-              percentage: Math.round((event.loaded * 100) / event.total),
-            };
-            setState({ ...state, uploadProgress: copy });
+  const handleOnClose = () => {
+    props.reset();
+    props.onClose();
+  }
+
+  const renderItem = (item) => {
+    return (
+      <div key={item.id} className={classes.itemContainer}>
+        <div className={classes.nameContainer}>
+          <Typography className={classes.fileName}>{item.file.name}</Typography>
+          {item.url &&
+            <CheckCircleOutline
+              className={classes.checkIcon}
+              fontSize="small"
+            />
           }
-        }
-      };
-      const formData = FormData();
-      formData.append("file", file, file.name);
-
-      axios.put("url", formData, config)
-        .then(res => {
-          const copy = { ...state.uploadProgress };
-          copy[file.name] = { state: "done", percentage: 100 };
-          setState({ ...state, uploadProgress: copy });
-          console.log(res);
-          resolve(res);
-        })
-        .catch(err => {
-          const copy = { ...state.uploadProgress };
-          copy[file.name] = { state: "error", percentage: 0 };
-          setState({ ...state, uploadProgress: copy });
-          console.log(err);
-          reject(err);
-        });
-    });
-  }
-
-  const renderProgress = (file) => {
-    const progress = state.uploadProgress[file.name];
-    if (state.uploading || state.successUploaded) {
-      return (
-        <div className={classes.progressWrapper}>
-          <LinearProgress value={progress ? progress.percentage : 0} />
-          <CheckCircleOutline
-            className={classes.checkIcon}
-            fontSize="small"
-            style={{ opacity: progress && progress.state === "done" ? 0.5 : 0}}
-          />
         </div>
-      )
-    }
+        {item.uploading &&
+          <LinearProgress className={classes.progressbar} />
+        }
+      </div>
+    )
   }
 
   return (
     <CustomDialog
       open={props.open}
-      onClose={props.onClose}
+      onClose={handleOnClose}
     >
       <CustomDialogTitle
         className={classes.title}
         iconClassName={classes.iconClose}
-        onClose={props.onClose}>
+        onClose={handleOnClose}>
         Upload Files
       </CustomDialogTitle>
       <DialogContent className={classes.content}>
         <Dropzone
           onFilesAdded={onFilesAdded}
-          disabled={state.uploading || state.successUploaded}
         />
         <div className={classes.files}>
-          {state.files.map(file => {
-            return (
-              <div key={file.name} className={classes.row}>
-                <Typography className={classes.fileName}>{file.name}</Typography>
-                {renderProgress(file)}
-              </div>
-            );
-          })}
+          {data.map(item => renderItem(item))}
         </div>
       </DialogContent>
       <DialogActions className={classes.actions}>
@@ -225,4 +175,18 @@ const UploadDialog = (props) => {
   );
 }
 
-export default UploadDialog;
+const mapStateToProps = (state) => {
+  return {
+    data: state.files
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addNewFiles: (files) => dispatch(addNewFiles(files)),
+    uploadFiles: (data) => dispatch(uploadFiles(data)),
+    reset: () => dispatch(reset()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UploadDialog);

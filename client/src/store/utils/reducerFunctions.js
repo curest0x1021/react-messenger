@@ -1,3 +1,5 @@
+import uuid from "react-uuid";
+
 export const addMessageToStore = (state, payload) => {
   const { message, sender } = payload;
   // if sender isn't null, that means the message needs to be put in a brand new convo
@@ -77,6 +79,60 @@ export const addNewConvoToStore = (state, recipientId, message) => {
       return newConvo;
     } else {
       return convo;
+    }
+  });
+};
+
+export const addFilesToStore = (state, files) => {
+  const newFiles = files.map(file => {
+    return {
+      id: uuid(),
+      file: file,
+      uploading: false,
+      url: "",
+      failed: false,
+    };
+  });
+  return [...state, ...newFiles];
+};
+
+export const startUploadToStore = (state, id) => {
+  return state.map(item => {
+    if (item.id === id) {
+      const newItem = { ...item };
+      newItem.uploading = true;
+      newItem.failed = false;
+      return newItem;
+    } else {
+      return item;
+    }
+  });
+};
+
+export const successUploadToStore = (state, id, url) => {
+  return state.map(item => {
+    if (item.id === id) {
+      const newItem = { ...item };
+      newItem.uploading = false;
+      newItem.failed = false;
+      newItem.url = url;
+      return newItem;
+    } else {
+      return item;
+    }
+  });
+};
+
+export const failUploadToStore = (state, id) => {
+  return state.map(item => {
+    if (item.id === id) {
+      const newItem = { ...item };
+      newItem.uploading = false;
+      newItem.url = "";
+      newItem.failed = true;
+      return newItem;
+    } else {
+      return item;
     }
   });
 };
