@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 12,
     color: "#9CADC8",
     letterSpacing: -0.17,
+    maxWidth: "150px",
+    "@media (max-width: 600px)": {
+      maxWidth: "70vw",
+    },
   },
 }));
 
@@ -32,7 +36,7 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
+        <Typography className={classes.previewText} noWrap>
           {latestMessageText}
         </Typography>
       </Box>
