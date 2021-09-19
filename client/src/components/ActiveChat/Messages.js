@@ -34,8 +34,8 @@ const Messages = (props) => {
       {lightbox.isOpen &&
         <Lightbox
           mainSrc={lightbox.images[lightbox.index]}
-          nextSrc={lightbox.images[(lightbox.index + 1) % lightbox.images.length]}
-          prevSrc={lightbox.images[(lightbox.index + lightbox.images.length - 1) % lightbox.images.length]}
+          nextSrc={lightbox.index < lightbox.images.length - 1 ? lightbox.images[(lightbox.index + 1) % lightbox.images.length] : null}
+          prevSrc={lightbox.index > 0 ? lightbox.images[(lightbox.index + lightbox.images.length - 1) % lightbox.images.length] : null}
           onCloseRequest={() => setLightbox({ isOpen: false, index: 0, images: [] })}
           onMovePrevRequest={() =>
             setLightbox({
