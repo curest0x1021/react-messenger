@@ -29,6 +29,12 @@ const ImageBubble = (props) => {
   const { attachments, mine } = props;
   const isMultiple = attachments.length > 1;
 
+  const handleOnClick = (idx) => {
+    if (props.openLightbox) {
+      props.openLightbox(attachments, idx);
+    }
+  }
+
   return (
     <Grid 
       container
@@ -40,6 +46,7 @@ const ImageBubble = (props) => {
             key={index}
             src={url}
             className={isMultiple ? classes.multiImages : classes.singleImage}
+            onClick={() => handleOnClick(index)}
             alt={index}/>
         );
       })}

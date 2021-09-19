@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 
 const OtherUserBubble = (props) => {
   const classes = useStyles();
-  const { text, time, otherUser, attachments } = props;
+  const { text, time, otherUser, attachments, openLightbox } = props;
   return (
     <Box className={classes.root}>
       <Avatar alt={otherUser.username} src={otherUser.photoUrl} className={classes.avatar}></Avatar>
@@ -44,7 +44,7 @@ const OtherUserBubble = (props) => {
           {otherUser.username} {time}
         </Typography>
         {attachments && attachments.length > 0 &&
-          <ImageBubble attachments={attachments} mine={false}/>
+          <ImageBubble attachments={attachments} mine={false} openLightbox={openLightbox}/>
         }
         {text &&
           <Box className={classes.bubble}>

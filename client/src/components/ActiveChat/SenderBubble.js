@@ -31,12 +31,12 @@ const useStyles = makeStyles(() => ({
 
 const SenderBubble = (props) => {
   const classes = useStyles();
-  const { time, text, attachments } = props;
+  const { time, text, attachments, openLightbox } = props;
   return (
     <Box className={classes.root}>
       <Typography className={classes.date}>{time}</Typography>
       {attachments && attachments.length > 0 &&
-        <ImageBubble attachments={attachments} mine={true}/>
+        <ImageBubble attachments={attachments} mine={true} openLightbox={openLightbox}/>
       }
       {text &&
         <Box className={classes.bubble}>
