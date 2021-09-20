@@ -3,7 +3,7 @@ import { Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = disabled => makeStyles((theme) => ({
   dropzone: {
     height: "200px",
     width: "200px",
@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     flexDirection: "column",
     fontSize: "16px",
+    cursor: disabled ? "default" : "pointer",
   },
   highlight: {
     background: theme.palette.background.highlight,
@@ -32,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Dropzone = (props) => {
-  const classes = useStyles();
   const [highlight, setHighlight] = useState(false);
+  const classes = useStyles(props.disabled)();
   const fileInputRef = useRef(null);
 
   const onDragOver = (event) => {
@@ -71,7 +72,7 @@ const Dropzone = (props) => {
 
   function fileListToArray(list) {
     const array = [];
-    for (var i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
       array.push(list.item(i));
     }
     return array;
@@ -84,7 +85,6 @@ const Dropzone = (props) => {
       onDragLeave={onDragLeave}
       onDrop={onDrop}
       onClick={openFileDialog}
-      style={{ cursor: props.disabled ? "default" : "pointer" }}
     >
       <input
         ref={fileInputRef}
