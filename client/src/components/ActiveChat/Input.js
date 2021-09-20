@@ -32,33 +32,26 @@ const Input = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
-    const messageText = event.target.text.value.trim();
-    if (messageText) {
+    await submitMessage(null);
+  };
+
+  const submitMessage = async (urls) => {
+    const messageText = text.trim();
+    if (messageText || urls) {
       const reqBody = {
         text: messageText,
         recipientId: otherUser.id,
         conversationId,
-        sender: conversationId ? null : user
+        sender: conversationId ? null : user,
+        attachments: urls,
       };
       await postMessage(reqBody);
       setText("");
     }
-  };
+  }
 
   const handleOpenToggle = () => {
     setOpen(!open);
-  }
-
-  const handleImageSubmit = async (urls) => {
-    const reqBody = {
-      text: text.trim(),
-      recipientId: otherUser.id,
-      conversationId,
-      sender: conversationId ? null : user,
-      attachments: urls,
-    };
-    await postMessage(reqBody);
-    setText("");
   }
 
   return (
@@ -87,7 +80,7 @@ const Input = (props) => {
       <UploadDialog
         open={open}
         onClose={handleOpenToggle}
-        onSubmit={handleImageSubmit}
+        onSubmit={submitMessage}
       />
     </>
   );
