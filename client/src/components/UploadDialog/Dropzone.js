@@ -3,11 +3,11 @@ import { Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 
-const useStyles = disabled => makeStyles((theme) => ({
+const useStyles = (disabled, highlight) => makeStyles((theme) => ({
   dropzone: {
     height: "200px",
     width: "200px",
-    background: theme.palette.background.primary,
+    background: highlight ? theme.palette.background.highlight : theme.palette.background.primary,
     border: theme.spacing(0.5),
     borderColor: theme.palette.border.primary,
     borderStyle: "dashed",
@@ -18,9 +18,6 @@ const useStyles = disabled => makeStyles((theme) => ({
     flexDirection: "column",
     fontSize: "16px",
     cursor: disabled ? "default" : "pointer",
-  },
-  highlight: {
-    background: theme.palette.background.highlight,
   },
   icon: {
     opacity: "0.3",
@@ -34,7 +31,7 @@ const useStyles = disabled => makeStyles((theme) => ({
 
 const Dropzone = (props) => {
   const [highlight, setHighlight] = useState(false);
-  const classes = useStyles(props.disabled)();
+  const classes = useStyles(props.disabled, highlight)();
   const fileInputRef = useRef(null);
 
   const onDragOver = (event) => {
@@ -80,7 +77,7 @@ const Dropzone = (props) => {
 
   return (
     <div
-      className={`${classes.dropzone} ${highlight && classes.highlight}`}
+      className={classes.dropzone}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
