@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import { SenderBubble, OtherUserBubble } from "../ActiveChat";
 import moment from "moment";
-import Lightbox from "../Lightbox";
+import Lightbox from "react-image-lightbox";
+import 'react-image-lightbox/style.css'; 
 
 const Messages = (props) => {
   const { messages, otherUser, userId } = props;
