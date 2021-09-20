@@ -2,10 +2,11 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = mine => makeStyles((theme) => ({
   container: {
     width: "260px",
     flexGrow: 1,
+    justifyContent: mine ? "flex-end" : "flex-start",
   },
   singleImage: {
     width: "100px",
@@ -24,9 +25,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ImageBubble = (props) => {
-  const classes = useStyles();
-
   const { attachments, mine } = props;
+  const classes = useStyles(mine)();
   const isMultiple = attachments.length > 1;
 
   const handleOnClick = (idx) => {
@@ -38,8 +38,7 @@ const ImageBubble = (props) => {
   return (
     <Grid 
       container
-      className={classes.container} 
-      style={{justifyContent: mine ? "flex-end" : "flex-start"}}>
+      className={classes.container} >
       {attachments.map((url, index) => {
         return (
           <img
