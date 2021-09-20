@@ -45,12 +45,8 @@ const Input = (props) => {
     }
   };
 
-  const handleAttachClick = () => {
-    setOpen(true);
-  }
-
-  const handleOnClose = () => {
-    setOpen(false);
+  const handleOpenToggle = () => {
+    setOpen(!open);
   }
 
   const handleImageSubmit = async (urls) => {
@@ -80,7 +76,7 @@ const Input = (props) => {
               <InputAdornment position="end">
                 <IconButton
                   size="small"
-                  onClick={handleAttachClick}>
+                  onClick={handleOpenToggle}>
                   <FileCopyOutlined />
                 </IconButton>
               </InputAdornment>
@@ -90,7 +86,7 @@ const Input = (props) => {
       </form>
       <UploadDialog
         open={open}
-        onClose={handleOnClose}
+        onClose={handleOpenToggle}
         onSubmit={handleImageSubmit}
       />
     </>
