@@ -23,29 +23,28 @@ export const reset = () => (dispatch) => {
 }
 
 export const uploadFiles = (files) => async (dispatch) => {
-  await files.forEach(async (item) => {
-    try {
-      dispatch(startUpload(item.id));
-      const { data } = await uploadFile(item.file);
-      console.log(data);
-      dispatch(successUploaded(item.id, data.url));
-    } catch (e) {
-      dispatch(failUpload(item.id));
-    }
-  });
+  try {
+    await Promise.all(files.map(f => uploadFile(dispatch, f)));
+  } catch (e) {
+    console.log(e);
+  }
+  
 }
 
-const uploadFile = (file) => {
+const uploadFile = (dispatch, item) => {
   return new Promise((resolve, reject) => {
+    dispatch(startUpload(item.id));
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", item.file);
     formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET);
 
     api.post("/image/upload", formData)
       .then(res => {
+        dispatch(successUploaded(item.id, res.data.url));
         resolve(res);
       })
       .catch(err => {
+        dispatch(failUpload(item.id));
         reject(err);
       });
   });
