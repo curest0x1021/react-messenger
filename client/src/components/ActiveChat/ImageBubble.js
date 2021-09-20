@@ -42,11 +42,11 @@ const ImageBubble = (props) => {
       {attachments.map((url, index) => {
         return (
           <img
-            key={index}
+            key={url}
             src={url}
             className={isMultiple ? classes.multiImages : classes.singleImage}
             onClick={() => handleOnClick(index)}
-            alt={index}/>
+            alt={url}/>
         );
       })}
     </Grid>
