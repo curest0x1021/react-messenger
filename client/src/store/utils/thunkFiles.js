@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CLOUDINARY_URL, UPLOAD_PRESET } from "../../config/constants";
+import { CLOUDINARY_URL } from "../../config/constants";
 import {
   addFiles,
   startUpload,
@@ -9,7 +9,7 @@ import {
 } from "../files";
 
 const api = axios.create({
-  baseURL: CLOUDINARY_URL,
+  baseURL: `${CLOUDINARY_URL}/${process.env.REACT_APP_CLOUD_NAME}`,
 });
 
 // FILES THUNK CREATORS
@@ -39,7 +39,7 @@ const uploadFile = (file) => {
   return new Promise((resolve, reject) => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", UPLOAD_PRESET);
+    formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET);
 
     api.post("/image/upload", formData)
       .then(res => {
