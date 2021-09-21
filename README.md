@@ -4,6 +4,13 @@ A one-to-one realtime chat app.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
+## Screenshots
+![Login page](https://github.com/curest0x1021/react-messenger/blob/main/login.png?raw=true)
+
+![Signup page](https://github.com/curest0x1021/react-messenger/blob/main/signup.png?raw=true)
+
+![Home page](https://github.com/curest0x1021/react-messenger/blob/main/main.png?raw=true)
+
 ## Initial Setup
 
 Create the PostgreSQL database (these instructions may need to be adapted for your operating system):
