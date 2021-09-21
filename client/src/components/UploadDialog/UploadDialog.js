@@ -58,19 +58,19 @@ const UploadDialog = (props) => {
     }
   }
 
+  const isButtonDisabled = (type = "upload") => {
+    let filterData;
+    if (type === "upload") {
+      filterData = data.filter(item => item.url === "");
+    } else {
+      filterData = data.filter(item => item.url !== "");
+    }
+    return filterData.length === 0;
+  }
+
   const handleOnClose = () => {
     props.reset();
     props.onClose();
-  }
-
-  const isUploadButtonDisabled = () => {
-    const filterData = data.filter(item => item.url === "");
-    return filterData.length === 0
-  }
-
-  const isSendButtonDisabled = () => {
-    const filterData = data.filter(item => item.url !== "");
-    return filterData.length === 0;
   }
 
   const handleOnSubmit = () => {
@@ -78,8 +78,7 @@ const UploadDialog = (props) => {
     if (urls.length > 0) {
       props.onSubmit(urls);
     }
-    props.reset();
-    props.onClose();
+    handleOnClose();
   }
 
   const renderItem = (item) => {
@@ -131,13 +130,13 @@ const UploadDialog = (props) => {
           variant="outlined"
           className={classes.uploadButton}
           onClick={uploadFiles}
-          disabled={isUploadButtonDisabled()}>
+          disabled={isButtonDisabled()}>
           Upload
         </Button>
         <Button
           variant="outlined"
           className={classes.sendButton}
-          disabled={isSendButtonDisabled()}
+          disabled={isButtonDisabled("send")}
           onClick={handleOnSubmit}>
           Send
         </Button>
