@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, LinearProgress, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, LinearProgress, Typography } from "@material-ui/core";
 import { Close, CheckCircleOutline, ErrorOutline } from "@material-ui/icons";
 import { styled } from "@material-ui/styles";
 import PropTypes from "prop-types";
@@ -21,7 +21,7 @@ const CustomDialogTitle = (props) => {
   const { children, onClose, className, iconClassName, ...other } = props;
 
   return (
-    <div className={className}>
+    <Box className={className}>
       <DialogTitle {...other} >
         {children}
       </DialogTitle>
@@ -34,7 +34,7 @@ const CustomDialogTitle = (props) => {
           <Close />
         </IconButton>
       )}
-    </div>
+    </Box>
   );
 };
 
@@ -84,8 +84,8 @@ const UploadDialog = (props) => {
 
   const renderItem = (item) => {
     return (
-      <div key={item.id} className={classes.itemContainer}>
-        <div className={classes.nameContainer}>
+      <Box key={item.id} className={classes.itemContainer}>
+        <Box className={classes.nameContainer}>
           <Typography className={classes.fileName}>{item.file.name}</Typography>
           {item.url &&
             <CheckCircleOutline
@@ -99,11 +99,11 @@ const UploadDialog = (props) => {
               fontSize="small"
             />
           }
-        </div>
+        </Box>
         {item.uploading &&
           <LinearProgress className={classes.progressbar} />
         }
-      </div>
+      </Box>
     )
   }
 
@@ -122,9 +122,9 @@ const UploadDialog = (props) => {
         <Dropzone
           onFilesAdded={onFilesAdded}
         />
-        <div className={classes.files}>
+        <Box className={classes.files}>
           {data.map(item => renderItem(item))}
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions className={classes.actions}>
         <Button

@@ -51,7 +51,7 @@ const Input = (props) => {
   }
 
   const handleOpenToggle = () => {
-    setOpen(!open);
+    setOpen(prev => !prev);
   }
 
   return (

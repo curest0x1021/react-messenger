@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 
@@ -76,7 +76,7 @@ const Dropzone = (props) => {
   }
 
   return (
-    <div
+    <Box
       className={classes.dropzone}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
@@ -93,7 +93,7 @@ const Dropzone = (props) => {
       />
       <CloudUpload fontSize="inherit" className={classes.icon}/>
       <Typography>Upload Files</Typography>
-    </div>
+    </Box>
   );
 };
 
