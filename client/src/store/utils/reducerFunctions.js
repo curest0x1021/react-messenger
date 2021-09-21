@@ -1,3 +1,5 @@
+import uuid from "react-uuid";
+
 export const addMessageToStore = (state, payload) => {
   const { message, sender } = payload;
   // if sender isn't null, that means the message needs to be put in a brand new convo
@@ -7,7 +9,11 @@ export const addMessageToStore = (state, payload) => {
       otherUser: sender,
       messages: [message],
     };
-    newConvo.latestMessageText = message.text;
+    if (message.text) {
+      newConvo.latestMessageText = message.text;
+    } else if (message.attachments && message.attachments.length > 0) {
+      newConvo.latestMessageText = "Image attached";
+    }
     return [newConvo, ...state];
   }
   
@@ -15,7 +21,11 @@ export const addMessageToStore = (state, payload) => {
     if (convo.id === message.conversationId) {
       const newConvo = { ...convo };
       newConvo.messages.push(message);
-      newConvo.latestMessageText = message.text;
+      if (message.text) {
+        newConvo.latestMessageText = message.text;
+      } else if (message.attachments && message.attachments.length > 0) {
+        newConvo.latestMessageText = "Image attached";
+      }
       return newConvo;
     } else {
       return convo;
@@ -73,10 +83,68 @@ export const addNewConvoToStore = (state, recipientId, message) => {
       const newConvo = { ...convo };
       newConvo.id = message.conversationId;
       newConvo.messages.push(message);
-      newConvo.latestMessageText = message.text;
+      if (message.text) {
+        newConvo.latestMessageText = message.text;
+      } else if (message.attachments && message.attachments.length > 0) {
+        newConvo.latestMessageText = "Image attached";
+      }
       return newConvo;
     } else {
       return convo;
+    }
+  });
+};
+
+export const addFilesToStore = (state, files) => {
+  const newFiles = files.map(file => {
+    return {
+      id: uuid(),
+      file: file,
+      uploading: false,
+      url: "",
+      failed: false,
+    };
+  });
+  return [...state, ...newFiles];
+};
+
+export const startUploadToStore = (state, id) => {
+  return state.map(item => {
+    if (item.id === id) {
+      const newItem = { ...item };
+      newItem.uploading = true;
+      newItem.failed = false;
+      return newItem;
+    } else {
+      return item;
+    }
+  });
+};
+
+export const successUploadToStore = (state, id, url) => {
+  return state.map(item => {
+    if (item.id === id) {
+      const newItem = { ...item };
+      newItem.uploading = false;
+      newItem.failed = false;
+      newItem.url = url;
+      return newItem;
+    } else {
+      return item;
+    }
+  });
+};
+
+export const failUploadToStore = (state, id) => {
+  return state.map(item => {
+    if (item.id === id) {
+      const newItem = { ...item };
+      newItem.uploading = false;
+      newItem.url = "";
+      newItem.failed = true;
+      return newItem;
+    } else {
+      return item;
     }
   });
 };

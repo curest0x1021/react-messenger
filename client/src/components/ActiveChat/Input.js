@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { FormControl, FilledInput } from "@material-ui/core";
+import { FormControl, FilledInput, InputAdornment, IconButton } from "@material-ui/core";
+import { FileCopyOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
+import UploadDialog from "../UploadDialog/UploadDialog";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -20,6 +22,7 @@ const useStyles = makeStyles(() => ({
 const Input = (props) => {
   const classes = useStyles();
   const [text, setText] = useState("");
+  const [open, setOpen] = useState(false);
   const { postMessage, otherUser, conversationId, user } = props;
 
   const handleChange = (event) => {
@@ -29,29 +32,57 @@ const Input = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
-    const reqBody = {
-      text: event.target.text.value,
-      recipientId: otherUser.id,
-      conversationId,
-      sender: conversationId ? null : user
-    };
-    await postMessage(reqBody);
-    setText("");
+    await submitMessage(null);
   };
 
+  const submitMessage = async (urls) => {
+    const messageText = text.trim();
+    if (messageText || urls) {
+      const reqBody = {
+        text: messageText,
+        recipientId: otherUser.id,
+        conversationId,
+        sender: conversationId ? null : user,
+        attachments: urls,
+      };
+      await postMessage(reqBody);
+      setText("");
+    }
+  }
+
+  const handleOpenToggle = () => {
+    setOpen(prev => !prev);
+  }
+
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
-      <FormControl fullWidth hiddenLabel>
-        <FilledInput
-          classes={{ root: classes.input }}
-          disableUnderline
-          placeholder="Type something..."
-          value={text}
-          name="text"
-          onChange={handleChange}
-        />
-      </FormControl>
-    </form>
+    <>
+      <form className={classes.root} onSubmit={handleSubmit}>
+        <FormControl fullWidth hiddenLabel>
+          <FilledInput
+            classes={{ root: classes.input }}
+            disableUnderline
+            placeholder="Type something..."
+            value={text}
+            name="text"
+            onChange={handleChange}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  size="small"
+                  onClick={handleOpenToggle}>
+                  <FileCopyOutlined />
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+      </form>
+      <UploadDialog
+        open={open}
+        onClose={handleOpenToggle}
+        onSubmit={submitMessage}
+      />
+    </>
   );
 };
 

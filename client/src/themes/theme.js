@@ -38,10 +38,14 @@ export const theme = createTheme({
       hover: "#E5E5E5",
       overlay: "rgba(0,0,0,0.6)",
       gradient: "linear-gradient(#3A8DFF, #86B9FF)",
+      highlight: "rgb(188, 185, 236)",
     },
     shadow: {
       primary: "rgba(185, 185, 185, .3)",
       secondary: "rgba(33, 203, 243, .3)"
+    },
+    border: {
+      primary: "rgb(187, 186, 186)",
     },
     text: {
       primary: "#000",
@@ -50,6 +54,11 @@ export const theme = createTheme({
       placeholder: "#B8B8B8",
       title: "#787A97",
       logo: "#fff",
+      file: "#555",
+    },
+    icon: {
+      success: "#68A320",
+      error: "#EF5350",
     }
-  }
+  },
 });
